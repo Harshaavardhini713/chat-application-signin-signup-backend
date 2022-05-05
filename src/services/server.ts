@@ -129,6 +129,23 @@
              }),
          );
 
+         /**
+         * Show User Profile
+         *  {string} "Userid vai Session"
+         *  return "User Profile"
+         */
+        this.app.get("/users/profile", responseToPostman(async (req: Request, res: Response) => {
+            //@ts-ignore
+            if(req.session && req.session.user)
+            {
+                // @ts-ignore
+                return await userController.getUserProfile(req.session.user._id);
+            }
+            else {
+                throw new Error("User need to be logged in");
+            }
+        }));
+
      }
  
      /**

@@ -4,6 +4,7 @@
 
 import users, { IUser } from "../models/users";
 import Bcrypt from "../services/bcrypt";
+import mongoose from "mongoose";
 
 export default class userController {
      /**
@@ -41,6 +42,28 @@ export default class userController {
         }
          throw new Error("user does not exist");
        
+    }
+
+    /**
+     * Get User Profile
+     * @param _id
+     * @returns user
+     */
+    static async getUserProfile(_id) {
+        const user = await users.aggregate([
+            {
+                $match: {
+                    _id: new mongoose.Types.ObjectId(_id)
+                },
+            },
+            {
+                $project:{
+                    "password": 0,
+                }
+            },
+        ]).exec();
+        if(user) return user;
+        else throw new Error("user not exists");
     }
 
 }
