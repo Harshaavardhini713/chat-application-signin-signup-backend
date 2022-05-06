@@ -33,7 +33,8 @@
       */
      middleware() {
          this.app.use(expressLog);
-         this.app.use(bodyParser.urlencoded({ extended: false }));
+         this.app.use(bodyParser.json());
+         //this.app.use(bodyParser.urlencoded({ extended: false }));
  
          this.app.use(
              session({
@@ -73,7 +74,7 @@
                     phone: Joi.string().required(),
                     password: Joi.string().required().min(8),
                 });
-
+                console.log(req.body)
                 // validating req.body
                 await schema.validateAsync(req.body);
                 // creating user
@@ -125,7 +126,7 @@
                  req.session.destroy(() => {});
  
                  // return success to user/admin
-                 return { success: true, message: "User has logged out" };
+                 return "User has logged out";
              }),
          );
 
